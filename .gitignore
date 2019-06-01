@@ -1,0 +1,10 @@
+*.pyc
+*~
+__pycache__
+migrations
+db.sqlite3
+virtualenv
+.DS_Store
+*.ini
+/static/
+*.sock
