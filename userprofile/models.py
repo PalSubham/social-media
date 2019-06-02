@@ -10,7 +10,7 @@ def get_path(instance, filename):
     return 'user_{0}/{1}'.format(instance.owner.pk, filename)
 
 class UserProfile(models.Model):
-    owner = models.OneToOneField(User, on_delete = models.DO_NOTHING)
+    owner = models.OneToOneField(User, on_delete = models.CASCADE)
     follows = models.ManyToManyField('self', related_name = 'followed_by', symmetrical = False, blank = True)
     timezone = models.CharField("User's timezone", max_length = 20, default = 'UTC')
     avatar = models.ImageField("Change avatar", upload_to = get_path, default = 'default_avatar.png')
