@@ -1,21 +1,26 @@
 from django.contrib import admin
 from .models import *
+from django.utils.translation import gettext_lazy
+from shareland.commons import show_pic, LinkToInlineObject
 
 # Register your models here.
 
+show_pic.short_description = gettext_lazy('Image')
+
 class PostImageInline(admin.StackedInline):
     model = PostImage
-    fields = ('image', 'created')
-    readonly_fields = ('created',)
+    fields = ('image', show_pic,)
+    readonly_fields = (show_pic,)
     extra = 0
 
 
 class ReactionInline(admin.StackedInline):
     model = Reaction
-    fields = ('reactor', 'reaction',)
-    extra = 2
+    fields = ('reactor', 'reaction',) 
+    extra = 0
 
 
+@admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     inlines = [PostImageInline, ReactionInline,]
     readonly_fields = ('creation_date',)
@@ -25,5 +30,3 @@ class PostAdmin(admin.ModelAdmin):
         css = {
             'all': ('configadmin/css/no-tz-warning.css',)
         }
-
-admin.site.register(Post, PostAdmin)
