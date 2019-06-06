@@ -13,7 +13,6 @@ class UserProfile(models.Model):
     timezone = models.CharField("User's timezone", max_length = 20, default = 'UTC')
     avatar = models.ImageField("Change avatar", upload_to = get_path, default = 'default_avatar.png')
     birthday = models.DateField('Birthday', null = True)
-    joined = models.DateTimeField('Joined', auto_now_add = True)
 
     class Meta:
         verbose_name = 'Profile data'

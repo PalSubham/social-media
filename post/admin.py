@@ -20,10 +20,14 @@ class ReactionInline(admin.StackedInline):
     extra = 0
 
 
+class CommentInline(admin.StackedInline):
+    model = Comment
+    extra = 0
+
+
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    inlines = [PostImageInline, ReactionInline,]
-    readonly_fields = ('creation_date',)
+    inlines = [PostImageInline, ReactionInline, CommentInline,]
 
     class Media:
         js = ('configadmin/js/no-tz-warning.js',)

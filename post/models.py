@@ -27,17 +27,20 @@ class PostImage(models.Model):
     class Meta:
         verbose_name = 'Post related image'
         verbose_name_plural = 'Post related images'
+    
+    def __str__(self):
+        return 'Image for {0}, id = {1}'.format(str(self.post), str(self.pk))
 
 
 class Reaction(models.Model):
     REACTIONS = [
-        (1, 'Likeit'),
-        (2, 'Facepalm'),
-        (3, 'Lovely'),
-        (4, 'Laughing'),
-        (5, 'Spellbound'),
-        (6, 'Sad'),
-        (7, 'Raging'), 
+        (1, '👌️'),
+        (2, '😑️'),
+        (3, '💖️'),
+        (4, '🤣️'),
+        (5, '😲️'),
+        (6, '😢️'),
+        (7, '😠️'), 
     ]
 
     post = models.ForeignKey(Post, on_delete = models.CASCADE, related_name = 'ReactionPost')
@@ -49,8 +52,11 @@ class Reaction(models.Model):
         verbose_name_plural = 'Reactions'
     
     def clean(self):
-        if Reaction.objects.filter(reactor__exact = self.reactor):
+        if not self.pk and Reaction.objects.filter(reactor__exact = self.reactor):
             raise ValidationError('One user one reactions')
+    
+    def __str__(self):
+        return 'Reaction on {0} by {1}, id = {2}'.format(str(self.post), str(self.reactor), str(self.pk))
 
 
 class Comment(models.Model):
@@ -58,10 +64,19 @@ class Comment(models.Model):
     Commentor = models.ForeignKey(User, on_delete = models.CASCADE, related_name = 'Commentor', null = True)
     comment_text = models.TextField('Textual comment', blank = True, null = True)
     comment_image = models.ImageField('Image comment', upload_to = get_path, blank = True, null = True)
+    comment_created = models.DateTimeField('Commented at', default = localtime)
+    parent = models.ForeignKey('self', null = True, blank = True, related_name = 'Replies', on_delete = models.CASCADE)
 
     def clean(self):
-        if self.comment_text == None and self.comment_image == None:
+        if not self.comment_text and not self.comment_image:
             raise ValidationError('No comment given')
+    
+    def __str__(self):
+        if not self.parent:
+            return 'Comment on {0} by {1}, id = {2}'.format(str(self.post), str(self.Commentor), str(self.pk))
+        else:
+            return 'Reply to comment id = {0} on {1} by {2}, id = {3}'.format(str(self.parent.pk), str(self.post), str(self.Commentor), str(self.pk))
+
 
 
 @receiver(post_delete, sender = PostImage)

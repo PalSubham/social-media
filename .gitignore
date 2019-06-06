@@ -8,3 +8,4 @@ virtualenv
 /static/
 *.sock
 media/user_**
+uwsgi.log

@@ -1,0 +1,59 @@
+{% extends "userprofile/base.html" %}
+
+{% block content %}
+<div class="container">
+	<div class="row root-container signup-page-container">
+		<div class="for-background"></div>
+		<div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 offset-xs-1 offset-sm-1 offset-md-1 offset-lg-1 greet-div">
+			<h1 class="great-header signup-header">Create Account</h1>
+			<form method="post" action="{% url 'signup' %}">
+				{% csrf_token %}
+				<div class="form-group">
+					<input type="text" class="form-control" name="username" placeholder="Your username" autofocus maxlength="150" required>
+					<span class="helptext">Required. 150 characters or fewer. Letters, digits and @, ., +, -, _.</span>
+				</div>
+				<div class="form-group">
+					<input type="text" class="form-control" name="first_name" placeholder="Your first name" required>
+				</div>
+				<div class="form-group">
+					<input type="text" class="form-control" name="last_name" placeholder="Your last name" required>
+				</div>
+				<div class="form-group">
+					<input type="email" class="form-control" name="email_id" placeholder="Your email id" required>
+				</div>
+				<div class="form-group">
+					<input type="text" class="form-control" name="birthday" placeholder="Your birth date" required>
+					<span class="helptext">Format: YYYY-MM-DD</span>
+				</div>
+				<div class="form-group">
+					<input type="password" class="form-control" name="password1" placeholder="Your password" required>
+					<ul class="helptext">
+						<li>Your password can't be too similar to other info.</li>
+						<li>Password must contain atleast 8 characters.</li>
+						<li>Don't put a commonly used word as password.</li>
+						<li>Password can't be entirely numeric.</li>
+					</ul>
+				</div>
+				<div class="form-group">
+					<input type="password" class="form-control" name="password2" placeholder="Reenter password" required>
+				</div>
+				<input type="hidden" id="id_timezone" name="timezone" value="UTC">
+				<input type="submit" class="btn btn-success" value="Sign Up"/>
+			</form>
+
+			{% if form.errors %}
+			<ul>
+				{% for field in form %}
+					{% for error in field.errors %}
+				<li class="error">{{ error|escape }}</li>
+					{% endfor %}
+				{% endfor %}
+				{% for error in form.non_field_errors %}
+				<li class="error">{{ error|escape }}</li>
+				{% endfor %}
+			</ul>
+			{% endif %}
+		</div>
+	</div>
+</div>
+{% endblock %}
