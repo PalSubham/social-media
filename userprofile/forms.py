@@ -6,9 +6,27 @@ from django.contrib.auth.models import User
 
 class SigninForm(auth_forms.AuthenticationForm):
 
-    username = auth_forms.UsernameField(widget = forms.TextInput)
-    password = forms.CharField(strip = False, widget = forms.PasswordInput)
-    email_id = forms.EmailField(widget = forms.EmailInput)
+    username = auth_forms.UsernameField(
+        widget = forms.TextInput,
+        error_messages = {
+            'required': 'Please enter your username.',
+        }
+    )
+
+    password = forms.CharField(
+        strip = False,
+        widget = forms.PasswordInput,
+        error_messages = {
+            'required': 'Please enter your password',
+        }
+    )
+
+    email_id = forms.EmailField(
+        widget = forms.EmailInput,
+        error_messages = {
+            'required': 'Please enter your email id.',
+        }
+    )
 
     def __init__(self, request = None, *args, **kwargs):
         super(SigninForm, self).__init__(request, *args, **kwargs)
@@ -37,10 +55,34 @@ class SigninForm(auth_forms.AuthenticationForm):
 
 class SignUpForm(auth_forms.UserCreationForm):
 
-    first_name = forms.CharField(widget = forms.TextInput)
-    last_name = forms.CharField(widget = forms.TextInput)
-    email_id = forms.EmailField(widget = forms.EmailInput)
-    birthday = forms.DateField(widget = forms.DateInput)
+    first_name = forms.CharField(
+        widget = forms.TextInput,
+        error_messages = {
+            'required': 'Please enter your first name.',
+        }
+    )
+
+    last_name = forms.CharField(
+        widget = forms.TextInput,
+        error_messages = {
+            'required': 'Please enter your last name.',
+        }
+    )
+
+    email_id = forms.EmailField(
+        widget = forms.EmailInput,
+        error_messages = {
+            'required': 'Please enter your email id.',
+        }
+    )
+
+    birthday = forms.DateField(
+        widget = forms.DateInput,
+        error_messages = {
+            'required': 'Please enter your birthdate.',
+        }
+    )
+
     timezone = forms.CharField(widget = forms.HiddenInput)
     
     def __init__(self, *args, **kwargs):
@@ -55,4 +97,17 @@ class SignUpForm(auth_forms.UserCreationForm):
             'username': forms.TextInput,
             'password1': forms.PasswordInput,
             'password2': forms.PasswordInput,
+        }
+
+        error_messages = {
+            'username': {
+                'required': 'Please enter your username.',
+                'invalid': 'Invalid username. Follow the given format',
+            },
+            'password1': {
+                'required': 'Please enter your password.',
+            },
+            'password2': {
+                'required': 'Please reenter your password for confirmation.'
+            },            
         }

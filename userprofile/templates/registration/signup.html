@@ -12,21 +12,32 @@
 					<input type="text" class="form-control" name="username" placeholder="Your username" autofocus maxlength="150" required>
 					<span class="helptext">Required. 150 characters or fewer. Letters, digits and @, ., +, -, _.</span>
 				</div>
-				<div class="form-group">
+				<div class="form-group input-group mb-3">
 					<input type="text" class="form-control" name="first_name" placeholder="Your first name" required>
-				</div>
-				<div class="form-group">
 					<input type="text" class="form-control" name="last_name" placeholder="Your last name" required>
 				</div>
 				<div class="form-group">
 					<input type="email" class="form-control" name="email_id" placeholder="Your email id" required>
 				</div>
 				<div class="form-group">
-					<input type="text" class="form-control" name="birthday" placeholder="Your birth date" required>
-					<span class="helptext">Format: YYYY-MM-DD</span>
+					<div class="input-group mb-3 date" id="calendar" data-date-format="yyyy-mm-dd" data-date-end-date="0d">
+						<input type="text" class="form-control" name="birthday" placeholder="Your birth date" required readonly>
+						<div class="input-group-append">
+							<div class="input-group-text">
+								<span class="fa fa-calendar" aria-hidden="true"></span>
+							</div>
+						</div>
+					</div>
 				</div>
 				<div class="form-group">
-					<input type="password" class="form-control" name="password1" placeholder="Your password" required>
+					<div class="input-group mb-3">
+						<input type="password" class="form-control" id="toggle-pwd-input1-signup" name="password1" placeholder="Enter password" required>
+						<div class="input-group-append">
+							<div class="input-group-text">
+								<span class="fa fa-eye" id="toggle-pwd-signup" aria-hidden="true"></span>
+							</div>
+						</div>
+					</div>
 					<ul class="helptext">
 						<li>Your password can't be too similar to other info.</li>
 						<li>Password must contain atleast 8 characters.</li>
@@ -35,23 +46,25 @@
 					</ul>
 				</div>
 				<div class="form-group">
-					<input type="password" class="form-control" name="password2" placeholder="Reenter password" required>
+					<input type="password" class="form-control" id="toggle-pwd-input2-signup" name="password2" placeholder="Reenter password" required>
 				</div>
 				<input type="hidden" id="id_timezone" name="timezone" value="UTC">
 				<input type="submit" class="btn btn-success" value="Sign Up"/>
 			</form>
 
 			{% if form.errors %}
-			<ul>
+			<div class="alert alert-warning">
+				<ul>
 				{% for field in form %}
 					{% for error in field.errors %}
-				<li class="error">{{ error|escape }}</li>
+					<li class="error">{{ error|escape }}</li>
 					{% endfor %}
 				{% endfor %}
 				{% for error in form.non_field_errors %}
-				<li class="error">{{ error|escape }}</li>
+					<li class="error">{{ error|escape }}</li>
 				{% endfor %}
-			</ul>
+				</ul>
+			</div>
 			{% endif %}
 		</div>
 	</div>

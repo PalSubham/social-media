@@ -16,7 +16,8 @@ class PostImageInline(admin.StackedInline):
 
 class ReactionInline(admin.StackedInline):
     model = Reaction
-    fields = ('reactor', 'reaction',) 
+    fields = ('reactor', 'reaction',)
+    radio_fields = {'reaction': admin.HORIZONTAL,}
     extra = 0
 
 

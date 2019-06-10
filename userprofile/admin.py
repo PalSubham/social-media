@@ -13,17 +13,34 @@ admin.site.unregister(User)
 show_pic.short_description = gettext_lazy('Avatar')
 
 
-class UserProfileInline(admin.StackedInline):
+class UserProfileInline(admin.StackedInline, LinkToInlineObject):
     model = UserProfile
-    fields = ('birthday', 'timezone', 'follows', 'avatar', show_pic,)
-    readonly_fields = (show_pic,)
-    filter_horizontal = ('follows',)
+    fields = ('birthday', 'timezone', 'avatar', show_pic, 'get_link',)
+    readonly_fields = (show_pic, 'get_link',)
 
 
 class PostInline(admin.StackedInline, LinkToInlineObject):
     model = Post
     readonly_fields = ('creation_date', 'get_link',)
     extra = 0
+
+
+class RelationshipInline(admin.StackedInline):
+    model = Relationship
+    fk_name = 'from_person'
+    radio_fields = {'status': admin.HORIZONTAL,}
+    extra = 0
+
+
+@admin.register(UserProfile)
+class UserProfileAdmin(admin.ModelAdmin):
+    inlines = [RelationshipInline,]
+
+    class Media:
+        js = ('configadmin/js/no-tz-warning.js',)
+        css = {
+            'all': ('configadmin/css/no-tz-warning.css',)
+        }
 
 
 @admin.register(User)
