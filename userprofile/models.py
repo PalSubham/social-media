@@ -8,7 +8,7 @@ import pytz
 # Create your models here.
 
 class UserProfile(models.Model):
-    owner = models.OneToOneField(User, on_delete = models.CASCADE)
+    owner = models.OneToOneField(User, on_delete = models.CASCADE, related_name = 'userprofile')
     follows = models.ManyToManyField('self', related_name = 'followed_by', through = 'Relationship', symmetrical = False, blank = True)
     timezone = models.CharField("User's timezone", max_length = 20, default = 'UTC')
     avatar = models.ImageField("Change avatar", upload_to = get_path, default = 'default_avatar.png')

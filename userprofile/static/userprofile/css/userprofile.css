@@ -25,7 +25,7 @@ header {
     font-size: 4vw;
 }
 
-.header a, .header a:active, .header a:hover, .header a:visited, .header a:focus, .header a:link {
+.header a, .header a:active, .header a:hover, .header a:visited, .header a:focus, .header a:link  {
     text-decoration: none;
     color: wheat;
 }

@@ -1,0 +1,32 @@
+{% extends "userprofile/base.html" %}
+
+{% block content %}
+<div class="container-fluid signed-in-body">
+    <div class="row">
+        <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 offset-xs-1 offset-sm 1 offset-md-1 offset-lg-1">
+            {% if not object.owner.is_authenticated == None %}
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <h2>By {{ object.owner.get_full_name }}</h2>
+                </div>
+            </div>
+            {% endif %}
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <h3>{{ object.heading }}</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <p>Created at: {{ object.creation_date }}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <p>{{ object.post_text|linebreaksbr }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

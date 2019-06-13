@@ -1,18 +1,11 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
+from django.shortcuts import redirect
 from django.contrib.auth.views import LoginView
 from django.views.generic.edit import FormView
-from django.views.generic.base import TemplateView
 from django.contrib.auth import authenticate, login
 from .forms import *
 from .models import *
 
 # Create your views here.
-
-class RootView(TemplateView):
-    template_name = 'userprofile/root.html'
-
 
 class SigninView(LoginView):
     form_class = SigninForm

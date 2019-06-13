@@ -9,7 +9,7 @@ from shareland.commons import get_path
 # Create your models here.
 
 class Post(models.Model):
-    owner = models.ForeignKey(User, on_delete = models.CASCADE, related_name = 'Owner')
+    owner = models.ForeignKey(User, on_delete = models.CASCADE, related_name = 'posts')
     heading = models.CharField('Post heading', max_length = 100, default = '')
     post_text = models.TextField('Post text', default = '')
     creation_date = models.DateTimeField('Creation date & time', default = localtime)
@@ -21,7 +21,7 @@ class Post(models.Model):
 
 
 class PostImage(models.Model):
-    post = models.ForeignKey(Post, on_delete = models.CASCADE, related_name = 'ImagePost')
+    post = models.ForeignKey(Post, on_delete = models.CASCADE, related_name = 'imageposts')
     image = models.ImageField('Image', upload_to = get_path)
 
     class Meta:
@@ -43,8 +43,8 @@ class Reaction(models.Model):
         (7, '😠️'), 
     ]
 
-    post = models.ForeignKey(Post, on_delete = models.CASCADE, related_name = 'ReactionPost')
-    reactor = models.ForeignKey(User, on_delete = models.CASCADE, related_name = 'Reactor', null = True)
+    post = models.ForeignKey(Post, on_delete = models.CASCADE, related_name = 'reactions')
+    reactor = models.ForeignKey(User, on_delete = models.CASCADE, related_name = 'reactor', null = True)
     reaction = models.PositiveSmallIntegerField('Reaction', choices = REACTIONS)
 
     class Meta:
@@ -60,12 +60,12 @@ class Reaction(models.Model):
 
 
 class Comment(models.Model):
-    post = models.ForeignKey(Post, on_delete = models.CASCADE, related_name = 'CommentPost')
+    post = models.ForeignKey(Post, on_delete = models.CASCADE, related_name = 'comments')
     Commentor = models.ForeignKey(User, on_delete = models.CASCADE, related_name = 'Commentor', null = True)
     comment_text = models.TextField('Textual comment', blank = True, null = True)
     comment_image = models.ImageField('Image comment', upload_to = get_path, blank = True, null = True)
     comment_created = models.DateTimeField('Commented at', default = localtime)
-    parent = models.ForeignKey('self', null = True, blank = True, related_name = 'Replies', on_delete = models.CASCADE)
+    parent = models.ForeignKey('self', null = True, blank = True, related_name = 'replies', on_delete = models.CASCADE)
 
     def clean(self):
         if not self.comment_text and not self.comment_image:
