@@ -1,5 +1,5 @@
 body {
-    background-image: url('../images/background.jpg');
+    background-image: url('../image/background.jpg');
     height: 100%;
     background-repeat: no-repeat;
     background-size: cover;
@@ -37,7 +37,7 @@ header {
 }
 
 .for-background {
-    background-image: url('../images/leaf.jpg');
+    background-image: url('../image/leaf.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
@@ -136,7 +136,8 @@ header {
 }
 
 .emoji-ex {
-    font-size: 5vw;
+    width: 7vw;
+    height: auto;
 }
 
 .feature-row3 {

@@ -34,13 +34,13 @@ class PostImage(models.Model):
 
 class Reaction(models.Model):
     REACTIONS = [
-        (1, '👌️'),
-        (2, '😑️'),
-        (3, '💖️'),
-        (4, '🤣️'),
-        (5, '😲️'),
-        (6, '😢️'),
-        (7, '😠️'), 
+        (1, 'ok-hand'),
+        (2, 'expressionless-face'),
+        (3, 'sparkling-heart'),
+        (4, 'rolling-on-floor-laughing'),
+        (5, 'face-with-open-mouth'),
+        (6, 'crying-face'),
+        (7, 'pouting-face'), 
     ]
 
     post = models.ForeignKey(Post, on_delete = models.CASCADE, related_name = 'reactions')

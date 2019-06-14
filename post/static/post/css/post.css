@@ -24,7 +24,7 @@
     background-color: rgba(222, 247, 245, 0.9);
     border-radius: 50px;
     border: 2px ridge #0d3a02;
-    padding: 2vw 1vw 2vw 1vw;
+    padding: 2vw 1vw 0vw 1vw;
 }
 
 #profile-owner {
