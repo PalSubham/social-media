@@ -1,7 +1,7 @@
 {% extends "userprofile/base.html" %}
 
 {% block content %}
-<div class="container-fluid">
+<div class="container-fluid" id="icon-navbar">
     <div class="row">
         <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 offset-xs-1 offset-sm-1 offset-md-1 offset-lg-1">
             <div class="row option-pages">
@@ -22,7 +22,7 @@
     </div>
 </div>
 
-<div class="container-fluid signed-in-body">
+<div class="container-fluid signed-in-body pt-5">
     {% block body-content %}
     {% endblock %}
 </div>

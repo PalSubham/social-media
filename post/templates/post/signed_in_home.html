@@ -1,5 +1,5 @@
 {% extends "post/signed_in_base.html" %}
-{% load post_filters %}
+{% load static post_filters post_tags %}
 
 {% block home-icon-id %}
 id="icon-for-active-page"
@@ -9,29 +9,61 @@ id="icon-for-active-page"
 {% for post in object_list %}
 <div class="row mb-5">
     <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 offset-xs-1 offset-sm 1 offset-md-1 offset-lg-1 post-brief-col py-3">
-        <p hidden>{{ post.id }}</p>
+        <div class="row mb-3">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 clearfix">
+                <a>
+                    <div class="all-image feed-avatar rounded-circle float-sm-left float-md-lef float-lg-left float-xl-left mr-2">
+                        <img src="{{ post.owner.userprofile.avatar.url }}">
+                    </div>
+                    <div class="float-sm-left float-md-lef float-lg-left float-xl-left non-selectable-text">
+                        <h2>{{ post.owner.get_full_name }}</h2>
+                    </div>
+                </a>
+            </div>
+        </div>
         <a href="{% url 'postdetails' pk=post.pk %}">
             <div class="row">
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    <h4>{{ post.heading }}</h4>
+                    <h4 class="non-selectable-text">{{ post.heading }}</h4>
                 </div>
             </div>
             <div class="row">
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    <p>Created at: {{ post.creation_date }}</p>
+                    <p class="non-selectable-text">Created at: {{ post.creation_date }}</p>
                 </div>
             </div>
             <div class="row my-3">
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    <p>{{ post.post_text|linebreaksbr|truncatewords:30 }}</p>
+                    <p class="non-selectable-text">{{ post.post_text|linebreaksbr|truncatewords:30 }}</p>
                 </div>
             </div>
+            {% if post.postimages.count > 0 %}
+            <div class="row mb-4">
+                <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 offset-xs-1 offset-sm-1 offset-md-1 offset-lg-1">
+                    <div class=row>
+                        {% slice_list 0 3 post.postimages.all as post_brief_images %}
+                        {% for image in post_brief_images %}
+                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 px-2">
+                            <div class="all-image post-brief-image">
+                                <img src="{{ image.image.url }}">
+                            </div>
+                        </div>
+                        {% endfor %}
+                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 px-2 d-flex align-items-center justify-content-center">
+                            {% if post.postimages.count > 3 %}
+                            <p class="extra-image-no non-selectable-text">+{{ post.postimages.count|add:"-3" }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
             <div class="row my-3">
                 <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5 reaction-comment mx-3">
-                    <p class="post-brief-reaction-no">{{ post.reactions.count|modify }} reaction{{ post.reactions.count|pluralize:"s" }}</p>
+                    <p class="post-brief-reaction-no non-selectable-text">{{ post.postreactions.count|modify }} reaction{{ post.reactions.count|pluralize:"s" }}</p>
                 </div>
                 <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5 reaction-comment mx-3">
-                    <p class="post-brief-comment-no">{{ post.comments.count|modify }} comment{{ post.reactions.count|pluralize:"s" }}</p>
+                    <p class="post-brief-comment-no non-selectable-text">{{ post.comments.count|modify }} comment{{ post.reactions.count|pluralize:"s" }}</p>
                 </div>
             </div>
         </a>

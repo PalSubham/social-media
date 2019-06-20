@@ -1,13 +1,22 @@
 $(window).ready(function () {
-    $('.all-avatar img').each(function (index, object) {
-        if($(this).naturalWidth <= $(this).naturalHeight)
+    $('.all-image').each(function (index, object) {
+        let images = $(this).children('img');
+        let size = images.length;
+
+        for(let i = 0; i < size; i++)
         {
-            $(this).width('100%').height('auto');
+            if(images[i].naturalWidth <= images[i].naturalHeight)
+            {
+                $(images[i]).width('100%').height('auto');
+            }
+            else
+            {
+                $(images[i]).width('auto').height('100%');
+            }
         }
-        else{
-            $(this).width('auto').height('100%');
-        }
+        
         return;
     });
+    
     return;
 });

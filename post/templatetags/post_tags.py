@@ -5,8 +5,5 @@ from django import template
 register = template.Library()
 
 @register.simple_tag
-def slice_list(option, the_list):
-    if option == 1:
-        return the_list[:4]
-    elif option == 2:
-        return the_list[4:8]
+def slice_list(beg, end, the_list):
+    return the_list[int(beg):int(end)]

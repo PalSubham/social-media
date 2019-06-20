@@ -21,7 +21,7 @@ class Post(models.Model):
 
 
 class PostImage(models.Model):
-    post = models.ForeignKey(Post, on_delete = models.CASCADE, related_name = 'imageposts')
+    post = models.ForeignKey(Post, on_delete = models.CASCADE, related_name = 'postimages')
     image = models.ImageField('Image', upload_to = get_path)
 
     class Meta:
@@ -43,7 +43,7 @@ class Reaction(models.Model):
         (7, 'pouting-face'), 
     ]
 
-    post = models.ForeignKey(Post, on_delete = models.CASCADE, related_name = 'reactions')
+    post = models.ForeignKey(Post, on_delete = models.CASCADE, related_name = 'postreactions')
     reactor = models.ForeignKey(User, on_delete = models.CASCADE, related_name = 'reactor', null = True)
     reaction = models.PositiveSmallIntegerField('Reaction', choices = REACTIONS)
 

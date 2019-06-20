@@ -12,7 +12,6 @@ class SigninForm(auth_forms.AuthenticationForm):
             'required': 'Please enter your username.',
         }
     )
-
     password = forms.CharField(
         strip = False,
         widget = forms.PasswordInput,
@@ -20,7 +19,6 @@ class SigninForm(auth_forms.AuthenticationForm):
             'required': 'Please enter your password',
         }
     )
-
     email_id = forms.EmailField(
         widget = forms.EmailInput,
         error_messages = {
@@ -61,28 +59,24 @@ class SignUpForm(auth_forms.UserCreationForm):
             'required': 'Please enter your first name.',
         }
     )
-
     last_name = forms.CharField(
         widget = forms.TextInput,
         error_messages = {
             'required': 'Please enter your last name.',
         }
     )
-
     email_id = forms.EmailField(
         widget = forms.EmailInput,
         error_messages = {
             'required': 'Please enter your email id.',
         }
     )
-
     birthday = forms.DateField(
         widget = forms.DateInput,
         error_messages = {
             'required': 'Please enter your birthdate.',
         }
     )
-
     timezone = forms.CharField(widget = forms.HiddenInput)
     
     def __init__(self, *args, **kwargs):

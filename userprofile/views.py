@@ -25,7 +25,7 @@ class SignupView(FormView):
         user.last_name = form.cleaned_data.get('last_name')
         user.email = form.cleaned_data.get('email_id')
         user.save()
-        userprofile = UserProfile.objects.get(owner = user)
+        userprofile = UserProfile.objects.get_or_create(owner = user)
         userprofile.timezone = form.cleaned_data.get('timezone')
         userprofile.birthday = form.cleaned_data.get('birthday')
         userprofile.save()
