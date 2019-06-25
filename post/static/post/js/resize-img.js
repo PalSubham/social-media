@@ -1,4 +1,5 @@
-$(window).ready(function () {
+function resize_image_brief()
+{
     $('.all-image').each(function (index, object) {
         let images = $(this).children('img');
         let size = images.length;
@@ -17,6 +18,14 @@ $(window).ready(function () {
         
         return;
     });
+
+    return;
+}
+
+$(window).ready(function () {
+    
+    resize_image_brief();
     
     return;
 });
+

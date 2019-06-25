@@ -56,7 +56,7 @@
     border-radius: 20px;
 }
 
-.all-image::after {
+.all-image:after {
     content: "";
     display: block;
     padding-bottom: 100%;
@@ -114,8 +114,11 @@
 .post-brief-col {
     border: 2px solid black;
     border-radius: 20px;
-    box-shadow: 5px 5px rgb(117, 113, 113);
     background-color: rgb(221, 248, 246);
+}
+
+.post-brief-col:hover {
+    box-shadow: 5px 5px rgb(117, 113, 113);
 }
 
 .post-brief h4 {
@@ -214,7 +217,6 @@
     bottom: 4vw;
     border: 2px solid black;
     border-radius: 50px;
-    padding: 5%;
 }
 
 .detail-dropdown-content-show {
@@ -246,14 +248,20 @@
     left: 0;
     margin: 0;
     padding: 0;
+    position: fixed;
 }
 
-#comment-form input[type=submit] {
+#comment-form input[type=button] {
     font-family: "FontAwesome";
 }
 
-.form-hide {
-    display: none;
+#comment-form label, #comment-form input[type=file] {
+    font-family: "Gloria Hallelujah";
+    font-weight: bold;
+}
+
+#comment-form input[type=file]:focus {
+    outline: none;
 }
 
 .comment-form {
@@ -266,4 +274,47 @@
 .comment-form .px-4 {
     background-color: rgb(199, 250, 246);
     border-radius: 20px;
+}
+
+.hide-comment-form {
+    display: none;
+}
+
+input[type=submit] {
+    font-family: "Fontawesome";
+}
+
+.file-input {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    position: absolute;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.file-input + label {
+    color: white;
+    background-color: rgb(124, 10, 10);
+    display: inline-block;
+    cursor: pointer;
+}
+
+.file-input:focus + label, .file-input + label:hover {
+    background-color: rgb(236, 14, 14);
+}
+
+.file-input:focus + label {
+    outline: 1px dotted #000;
+    outline: -webkit-focus-ring-color auto 5px;
+}
+
+#load-more .d-flex div {
+    font-family: "Gloria Hallelujah";
+    font-size: 1.5vw;
+    cursor: pointer;
+}
+
+#load-more .d-flex div:hover {
+    text-decoration: underline;
 }

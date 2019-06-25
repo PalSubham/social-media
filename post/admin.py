@@ -5,6 +5,10 @@ from shareland.commons import show_pic, LinkToInlineObject
 
 # Register your models here.
 
+admin.site.site_header = gettext_lazy('sharELand administration')
+admin.site.site_title = gettext_lazy('sharELand site admin')
+admin.site.index_title = gettext_lazy('sharELand admin panel')
+
 show_pic.short_description = gettext_lazy('Image')
 
 class PostImageInline(admin.StackedInline):

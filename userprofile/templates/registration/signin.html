@@ -4,8 +4,8 @@
 <div class="container-fluid signin-super">
 	<div class="row root-container signin-page-container">
 		<div class="for-background"></div>
-		<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 offset-xs-2 offset-sm-2 offset-md-2 offset-lg-2 greet-div">
-			<h1 class="great-header signup-header">Sign In</h1>
+		<div class="col-md-8 col-lg-8 offset-xs-2 offset-sm-2 offset-md-2 offset-lg-2 greet-div">
+			<h1 class="great-header signup-header non-selectable-text">Sign In</h1>
 			<form method="post" action="{% url 'login' %}">
 				{% csrf_token %}
 				<div class="form-group">
@@ -30,11 +30,11 @@
 				<ul>
 				{% for field in form %}
 					{% for error in field.errors %}
-					<li class="error">{{ error|escape }}</li>
+					<li class="error non-selectable-text">{{ error|escape }}</li>
 					{% endfor %}
 				{% endfor %}
 				{% for error in form.non_field_errors %}
-					<li class="error">{{ error|escape }}</li>
+					<li class="error non-selectable-text">{{ error|escape }}</li>
 				{% endfor %}
 				</ul>
 			</div>

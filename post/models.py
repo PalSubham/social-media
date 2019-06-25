@@ -67,6 +67,9 @@ class Comment(models.Model):
     comment_created = models.DateTimeField('Commented at', default = localtime)
     parent = models.ForeignKey('self', null = True, blank = True, related_name = 'replies', on_delete = models.CASCADE)
 
+    class Meta:
+        ordering = ['comment_created',]
+
     def clean(self):
         if not self.comment_text and not self.comment_image:
             raise ValidationError('No comment given')

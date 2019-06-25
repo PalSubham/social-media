@@ -5,8 +5,10 @@ from django.views.generic.detail import DetailView
 from django.views import View
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import JsonResponse, HttpResponseNotFound
+from django.http import JsonResponse, HttpResponseForbidden
+from django.template.loader import render_to_string
 from post.templatetags.post_filters import *
+from .mixins import *
 from .models import *
 
 # Create your views here.
@@ -44,7 +46,7 @@ class ProfileView(LoginRequiredMixin, TemplateView):
         return context
 
 
-class PostDetailView(LoginRequiredMixin, DetailView):
+class PostDetailView(EnsureCSRFCookieMixin, LoginRequiredMixin, DetailView):
     model = Post
     template_name = 'post/post_detail.html'
 
@@ -60,31 +62,105 @@ class PostDetailView(LoginRequiredMixin, DetailView):
 
 
 class ReactionView(LoginRequiredMixin, View):
-    http_method_names = ['get',]
+    http_method_names = ['post',]
 
-    def get(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         if request.is_ajax():
-            post_id = request.GET.get('post_id', None)
-            reaction_number = request.GET.get('reaction_number', None)
+            post_id = request.POST.get('post_id', None)
+            reaction_number = request.POST.get('reaction_number', None)
 
             if post_id == None or reaction_number == None:
                 data = {
                     'success': False,
                 }
             else:
-                post = Post.objects.get(id = post_id)
-                reaction, created = Reaction.objects.update_or_create(post = post, reactor = request.user, defaults = {'reaction': int(reaction_number)})
+                try:
+                    post = Post.objects.get(id = post_id)
+                    reaction, created = Reaction.objects.update_or_create(post = post, reactor = request.user, defaults = {'reaction': int(reaction_number)})
 
-                data = {
-                    'success': True,
-                    'reactions': modify(post.postreactions.count()),
-                    'plural': 's' if (post.postreactions.count() > 1) else '',
-                }
+                    data = {
+                        'success': True,
+                        'reactions': modify(post.postreactions.count()),
+                        'plural': 's' if (post.postreactions.count() > 1) else '',
+                    }
+                except:
+                    data = {
+                        'success': False,
+                    }
 
             return JsonResponse(data)
         else:
-            return HttpResponseNotFound()
+            return HttpResponseForbidden()
 
 
 class CommentView(LoginRequiredMixin, View):
-    pass 
+    http_method_names = ['post',]
+
+    def post(self, request, *args, **kwargs):
+        if request.is_ajax():
+            comment_text = request.POST.get('comment_text', None)
+            post_id = request.POST.get('post_id', None)
+            comment_image = request.FILES.get('comment_image', None)
+
+            if (comment_text == None and comment_image == None) or post_id == None:
+                data = {
+                    'success': False,
+                }
+            else:
+                try:
+                    post = Post.objects.get(id = post_id)
+                    new_comment = Comment(post = post, Commentor = request.user, comment_text = comment_text, comment_image = comment_image)
+                    new_comment.save()
+
+                    data = {
+                        'success': True,
+                        'new_comment_html': render_to_string('post/extra_comment.html', {'comment': new_comment,}),
+                        'comments': modify(post.comments.count()),
+                        'plural': 's' if (post.comments.count() > 1) else '',
+                    }
+                except:
+                    if not new_comment == None:
+                        new_comment.delete()
+                    
+                    data = {
+                        'success': False,
+                    }
+            
+            return JsonResponse(data)
+        else:
+            return HttpResponseForbidden()
+
+
+class ExtraDataView(LoginRequiredMixin, View):
+    http_method_names = ['get',]
+
+    def get(self, request, *args, **kwargs):
+        if request.is_ajax():
+            what = request.GET.get('what', None)
+            post_id = request.GET.get('post_id', None)
+            loaded = request.GET.get('loaded', None)
+
+            if what == None or loaded == None or post_id == None:
+                data = {
+                    'success': False,
+                }
+            else:
+                if what == 'comment':
+                    try:
+                        loaded = int(loaded)
+                        post = Post.objects.get(id = post_id)
+                        extra_comments = Comment.objects.filter(post = post).order_by('-comment_created')[loaded : loaded + 3]
+
+                        data = {
+                            'success': True,
+                            'total': Comment.objects.filter(post = post).count(),
+                            'extra_comments': list(render_to_string('post/extra_comment.html', {'comment': comment,}) for comment in extra_comments),
+                        }
+                    except:
+                        data = {
+                            'success': False,
+                        }
+            
+            return JsonResponse(data)
+        else:
+            return HttpResponseForbidden()
