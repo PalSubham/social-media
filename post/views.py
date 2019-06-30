@@ -1,13 +1,15 @@
-from django.shortcuts import render
 from django.views.generic.list import ListView
 from django.views.generic.base import TemplateView
 from django.views.generic.detail import DetailView
+from django.views.generic.edit import CreateView
 from django.views import View
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse, HttpResponseForbidden
 from django.template.loader import render_to_string
+from django.urls import reverse
 from post.templatetags.post_filters import *
+from .forms import *
 from .mixins import *
 from .models import *
 
@@ -164,3 +166,31 @@ class ExtraDataView(LoginRequiredMixin, View):
             return JsonResponse(data)
         else:
             return HttpResponseForbidden()
+
+
+class CreatePostView(LoginRequiredMixin, CreateView):
+    model = Post
+    form_class = PostForm
+    template_name = 'post/new_post.html'
+
+    def get_success_url(self):
+        return reverse('postdetails', args = (self.object.id,))
+    
+    def get_initial(self):
+        return {'owner': self.request.user,}
+
+    def form_valid(self, form):
+        images = self.request.FILES.getlist('post_images')
+
+        if len(images) > 50:
+            form.add_error(field = 'post_images', error = 'Cannot upload more than 50 images')
+            return self.form_invalid(form)
+        else:
+            valid = super(CreatePostView, self).form_valid(form)
+            post = self.object
+
+            if not images == []:
+                for image in images:
+                    PostImage.objects.create(post = post, image = image)
+            
+            return valid

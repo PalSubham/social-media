@@ -1,9 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models.signals import post_save, post_delete
+from django.db.models.signals import post_save
 from django.dispatch import receiver
 from shareland.commons import get_path
-import pytz
 
 # Create your models here.
 
@@ -58,10 +57,4 @@ class Relationship(models.Model):
 def create_UserProfile_object(sender, instance, created, **kwargs):
     if created:
         UserProfile.objects.get_or_create(owner = instance)
-    return
-
-
-@receiver(post_delete, sender = UserProfile)
-def delete_image(sender, instance, **kwargs):
-    instance.avatar.delete(False)
     return

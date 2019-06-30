@@ -16,6 +16,7 @@ class PostImageInline(admin.StackedInline):
     fields = ('image', show_pic,)
     readonly_fields = (show_pic,)
     extra = 0
+    max_num = 50
 
 
 class ReactionInline(admin.StackedInline):

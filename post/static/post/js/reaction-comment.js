@@ -7,15 +7,9 @@ Unselects comment image
 $(window).ready(function () {
 
     $('#comment-form textarea').keyup(function () {
-        let empty = false;
         let submit = $('#comment-form input[type=submit]');
 
         if($(this).val().length == 0 && $('#comment-form input[type=file]')[0].files.length == 0)
-        {
-            empty = true;
-        }
-
-        if(empty)
         {
             submit.attr('disabled', 'disabled');
         }
@@ -90,7 +84,7 @@ $(window).ready(function () {
                         return;
                     }, 10);
                     
-                    $('.post-brief-comment-no').text(data.comments + ' reaction' + data.plural);
+                    $('.post-brief-comment-no').text(data.comments + ' comment' + data.plural);
                     $('#more-comments').append(data.new_comment_html);
                 }
                 else

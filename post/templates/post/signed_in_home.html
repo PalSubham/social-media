@@ -6,6 +6,13 @@ id="icon-for-active-page"
 {% endblock %}
 
 {% block body-content %}
+<div class="row mb-4 mx-auto">
+    <div class="col-md-4 col-lg-4 offset-xs-4 offset-sm-4 offset-md-4 offset-lg-4 px-0" id="new-post">
+        <a class="m-0 p-0 d-flex align-items-center justify-content-center w-100 h-100" href="{% url 'createpost' %}">
+            <p class="my-2 non-selectable-text">What's in your mind?</p>
+        </a>
+    </div>
+</div>
 {% for post in object_list %}
 <div class="row mb-5 mx-auto">
     <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 offset-xs-1 offset-sm-1 offset-md-1 offset-lg-1 post-brief-col py-3">
@@ -27,16 +34,18 @@ id="icon-for-active-page"
                     <h4 class="non-selectable-text">{{ post.heading }}</h4>
                 </div>
             </div>
-            <div class="row">
+            <div class="row mb-3">
                 <div class="col-md-12 col-lg-12">
                     <p class="non-selectable-text">Created at: {{ post.creation_date }}</p>
                 </div>
             </div>
-            <div class="row my-3">
+            {% if post.post_text %}
+            <div class="row mb-3">
                 <div class="col-md-12 col-lg-12">
                     <p class="non-selectable-text">{{ post.post_text|linebreaksbr|truncatewords:30 }}</p>
                 </div>
             </div>
+            {% endif %}
             {% if post.postimages.count > 0 %}
             <div class="row mb-4">
                 <div class="col-md-8 col-lg-8 offset-xs-1 offset-sm-1 offset-md-1 offset-lg-1">
@@ -48,11 +57,11 @@ id="icon-for-active-page"
                             </div>
                         </div>
                         {% endfor %}
-                        <div class="col-md-3 col-lg-3 px-2 d-flex align-items-center justify-content-center">
-                            {% if post.postimages.count > 3 %}
-                            <p class="extra-image-no non-selectable-text">+{{ post.postimages.count|add:"-3" }}</p>
-                            {% endif %}
+                        {% if post.postimages.count > 3 %}
+                        <div class="col-md-3 col-lg-3 px-2 d-flex align-items-center justify-content-center">                           
+                            <p class="extra-image-no non-selectable-text">+{{ post.postimages.count|add:"-3" }}</p>                            
                         </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>

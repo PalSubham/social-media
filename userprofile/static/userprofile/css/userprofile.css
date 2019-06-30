@@ -170,7 +170,7 @@ footer h3 {
     color: white;
 }
 
-.signup-page-container, .signin-page-container {
+.signup-page-container, .signin-page-container, .new-post-container {
     text-align: left;
 }
 

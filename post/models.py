@@ -11,7 +11,7 @@ from shareland.commons import get_path
 class Post(models.Model):
     owner = models.ForeignKey(User, on_delete = models.CASCADE, related_name = 'posts')
     heading = models.CharField('Post heading', max_length = 100, default = '')
-    post_text = models.TextField('Post text', default = '')
+    post_text = models.TextField('Post text', blank = True, null = True)
     creation_date = models.DateTimeField('Creation date & time', default = localtime)
 
     def __str__(self):
@@ -44,7 +44,7 @@ class Reaction(models.Model):
     ]
 
     post = models.ForeignKey(Post, on_delete = models.CASCADE, related_name = 'postreactions')
-    reactor = models.ForeignKey(User, on_delete = models.CASCADE, related_name = 'reactor', null = True)
+    reactor = models.ForeignKey(User, on_delete = models.CASCADE, related_name = 'reactor')
     reaction = models.PositiveSmallIntegerField('Reaction', choices = REACTIONS)
 
     class Meta:
@@ -60,8 +60,8 @@ class Reaction(models.Model):
 
 
 class Comment(models.Model):
-    post = models.ForeignKey(Post, on_delete = models.CASCADE, related_name = 'comments')
-    Commentor = models.ForeignKey(User, on_delete = models.CASCADE, related_name = 'Commentor', null = True)
+    post = models.ForeignKey(Post, on_delete = models.CASCADE, related_name = 'comments', blank = True, null = True)
+    Commentor = models.ForeignKey(User, on_delete = models.CASCADE, related_name = 'Commentor')
     comment_text = models.TextField('Textual comment', blank = True, null = True)
     comment_image = models.ImageField('Image comment', upload_to = get_path, blank = True, null = True)
     comment_created = models.DateTimeField('Commented at', default = localtime)

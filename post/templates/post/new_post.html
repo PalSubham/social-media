@@ -1,0 +1,54 @@
+{% extends 'userprofile/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <div class="row root-container new-post-container">
+        <div class="for-background"></div>
+        <div class="col-md-8 col-lg-8 offset-xs-2 offset-sm-2 offset-md-2 offset-lg-2 new-post-div">
+            <h1 class="great-header new-post-header non-selectable-text mb-4 mt-3">New Post</h1>
+            <form enctype="multipart/form-data" id="post-form" action="{% url 'createpost' %}" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <input class="form-control" type="text" name="heading" maxlength="100" placeholder="Heading" autofocus required>
+                </div>
+                <div class="form-group">
+                    <textarea class="form-control" name="post_text" rows="6" placeholder="Write something..."></textarea>
+                </div>
+                <div class="my-2 p-0">Maximum 50 images at a time.</div>
+                <div class="form-group d-flex" id="image-input-container">
+                    <div class="single-image-container px-2 py-2 position-relative">
+                        <input class="form-control-file post-file-input" type="file" name="post_images" accept="image/*" id="file_0" onchange="moreImage(event)">
+                        <label for="file_0" class="h-100 w-100 position-relative" title="New Image">
+                            <img class="position-absolute m-auto w-auto h-auto" src="{% static 'post/svg/add_image.svg' %}">
+                        </label>
+                        <div class="remove-post-image rounded-circle position-absolute" title="Remove image" onclick="removeImage(event)">
+                            <span class="fa fa-remove"></span>
+                        </div>
+                    </div>
+                    <div id="pad" class="p-0 m-0">&nbsp;&nbsp;</div>
+                </div>
+                <input type="hidden" name="owner" value="{{ form.owner.value }}">
+                <div class="clearfix">
+                    <input type="submit" class="btn btn-success float-right" value="&#xf135;" title="Upload" disabled="disabled">
+                </div>
+            </form>
+
+            {% if form.errors %}
+			<div class="alert alert-warning">
+				<ul>
+				{% for field in form %}
+					{% for error in field.errors %}
+					<li class="error non-selectable-text">{{ error|escape }}</li>
+					{% endfor %}
+				{% endfor %}
+				{% for error in form.non_field_errors %}
+					<li class="error  non-selectable-text">{{ error|escape }}</li>
+				{% endfor %}
+				</ul>
+			</div>
+			{% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

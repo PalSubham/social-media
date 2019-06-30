@@ -1,3 +1,4 @@
+
 #icon-navbar {
     position: sticky;
     position: -webkit-sticky;
@@ -18,7 +19,7 @@
     border-radius: 50px;
 }
 
-.option-pages a, .option-pages a:active, .option-pages a:hover, .option-pages a:visited, .option-pages a:focus, .option-pages a:link  {
+.option-pages a, .option-pages a:link, .option-pages a:visited, .option-pages a:hover, .option-pages a:active, .option-pages a:focus  {
     text-decoration: none;
     color: black;
     margin: 5px;
@@ -32,6 +33,24 @@
     border-radius: 50px;
     border: 2px ridge #0d3a02;
     padding: 2vw 1vw 0vw 1vw;
+}
+
+#new-post a:link, #new-post a:visited, #new-post a:active, #new-post a:focus {
+    text-decoration: none;
+    color: rgb(95, 90, 90);
+}
+
+#new-post a:hover {
+    text-decoration: none;
+    color: black;
+}
+
+#new-post {
+    background-color: white;
+    border: 2px solid rgb(73, 72, 72);
+    border-radius: 50px;
+    font-family: "Gloria Hallelujah";
+    font-size: 1.5vw;
 }
 
 #profile-owner {
@@ -268,6 +287,8 @@
     z-index: 100;
     top: 50%;
     left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
 }
 
@@ -280,16 +301,16 @@
     display: none;
 }
 
-input[type=submit] {
+#comment-form input[type=submit], #post-form input[type=submit] {
     font-family: "Fontawesome";
 }
 
-.file-input {
+.file-input, .post-file-input {
     width: 0.1px;
     height: 0.1px;
     opacity: 0;
     position: absolute;
-    z-index: -1;
+    z-index: -5;
     overflow: hidden;
 }
 
@@ -317,4 +338,82 @@ input[type=submit] {
 
 #load-more .d-flex div:hover {
     text-decoration: underline;
+}
+
+.new-post-div {
+    z-index: 2;
+    overflow: hidden;
+}
+
+.new-post-header {
+    text-align: center;
+}
+
+#post-form div.my-2 {
+    font-family: "Lobster";
+    font-size: 20px;
+}
+
+.post-file-input + label {
+    border-radius: 20px;
+    display: inline-block;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+#image-input-container::-webkit-scrollbar {
+    display: none;
+}
+
+#image-input-container {
+    height: 153px;
+    overflow-y: hidden;
+    overflow-x: auto;
+    background: white;
+    border: 1px solid green;
+    border-radius: 20px;
+    overflow: -moz-scrollbars-none;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: 10px;
+}
+
+.single-image-container {
+    height: 128px;
+    min-width: 128px;
+    max-width: 128px;
+    background-color: grey;
+    border-radius: 20px;
+}
+
+.single-image-container img {
+    max-width: 100%;
+    max-height: 100%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.remove-post-image {
+    height: 20px;
+    width: 20px;
+    background-color: red;
+    opacity: 0.3;
+    left: 5px;
+    top: 5px;
+    z-index: 10;
+    display: none;
+}
+
+.remove-post-image:hover {
+    opacity: 1;
+    cursor: pointer;
+}
+
+.remove-post-image span {
+    color: black;
+    margin-top: 50%;
+    margin-left: 50%;
+    transform: translate(-50%, -50%);
 }

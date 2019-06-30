@@ -1,9 +1,8 @@
-from django.shortcuts import redirect
 from django.contrib.auth.views import LoginView
 from django.views.generic.edit import FormView
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import User
 from .forms import *
-from .models import *
 
 # Create your views here.
 
@@ -13,21 +12,24 @@ class SigninView(LoginView):
 
 
 class SignupView(FormView):
+    model = User
     form_class = SignUpForm
     template_name = 'registration/signup.html'
+    success_url = '/'
 
     def form_valid(self, form):
-        form.save()
+        newuser = form.save()
         username = form.cleaned_data.get('username')
         password = form.cleaned_data.get('password1')
-        user = authenticate(username = username, password = password)
-        user.first_name = form.cleaned_data.get('first_name')
-        user.last_name = form.cleaned_data.get('last_name')
-        user.email = form.cleaned_data.get('email_id')
-        user.save()
-        userprofile = UserProfile.objects.get_or_create(owner = user)
-        userprofile.timezone = form.cleaned_data.get('timezone')
-        userprofile.birthday = form.cleaned_data.get('birthday')
-        userprofile.save()
-        login(self.request, user)
-        return redirect('root')
+        user = authenticate(request = self.request, username = username, password = password)
+
+        if not user == None:
+            userprofile = user.userprofile
+            userprofile.timezone = form.cleaned_data.get('timezone')
+            userprofile.birthday = form.cleaned_data.get('birthday')
+            userprofile.save()
+            login(self.request, user)
+        else:
+            newuser.delete()
+
+        return super(SignupView, self).form_valid(form)
