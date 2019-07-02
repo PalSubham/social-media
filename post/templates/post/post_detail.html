@@ -118,7 +118,6 @@
                     <p class="non-selectable-text">Comment</p>
                 </div>
             </div>
-            {% ifnotequal object.comments.count 0 %}
             {% if object.comments.count > 1 %}
             <div class="row mb-4" id="load-more">
                 <div class="col-md-12 col-lg-12 d-flex align-items-center justify-content-center" id="load-more">
@@ -130,6 +129,7 @@
             {% endif %}
             <div class="row m-0 p-0">
                 <div class="col-md-12 col-lg-12 m-0 p-0" id="more-comments">
+                    {% ifnotequal object.comments.count 0 %}
                     {% for comment in object.comments.all.reverse|slice:":3"|dictsort:"comment_created" %}
                     <div class="row mb-3">
                         <div class="col-md-10 col-lg-10 offset-xs-1 offset-sm-1 offset-md-1 offset-lg-1 post-brief-col px-4 py-4">
@@ -171,9 +171,9 @@
                         </div>
                     </div>
                     {% endfor %}
+                    {% endifnotequal %}
                 </div>
             </div>
-            {% endifnotequal %}
         </div>
     </div>
 </div>
