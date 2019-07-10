@@ -20,7 +20,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'hkzx6263x$jg*ui2s(u=lk_^yyit^h2aaygxvd!=j(ews%p6(r'
+key_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'key')
+
+with open(key_file, 'r') as key:
+    SECRET_KEY = key.read().strip()
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -28,7 +31,6 @@ DEBUG = True
 ALLOWED_HOSTS = [
     '127.0.0.1',
     '0.0.0.0',
-    '192.168.43.158',
 ]
 
 
@@ -41,11 +43,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
+    'rest_framework',
+    'notifications',
     'userprofile',
     'post',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware'
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -53,7 +59,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'userprofile.middlewares.ActivateTimezoneMiddleware',
+    'userprofile.middleware.ActivateTimezoneMiddleware',
 ]
 
 ROOT_URLCONF = 'shareland.urls'
@@ -141,3 +147,18 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+# Notifications settings
+
+NOTIFICATIONS_CHANNELS = {
+    'websocket': 'post.channels.NotificationBroadcastWebsocketChannel'
+}
+
+
+# Whitelist for cross origin requests
+
+CORS_ORIGIN_WHITELIST = (
+    '127.0.0.1:3000/',
+    '0.0.0.0:3000/',
+)

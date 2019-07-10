@@ -8,6 +8,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse, HttpResponseForbidden
 from django.template.loader import render_to_string
 from django.urls import reverse
+from notifications.models import *
 from post.templatetags.post_filters import *
 from .forms import *
 from .mixins import *
@@ -61,6 +62,14 @@ class PostDetailView(EnsureCSRFCookieMixin, LoginRequiredMixin, DetailView):
             context['image_name'] = 'all'
         
         return context
+    
+    def get(self, request, *args, **kwargs):
+        notif_id = request.GET.get('notif', None)
+
+        if not notif_id == None:
+            Notification.objects.get(id = int(notif_id)).delete()
+        
+        return super(PostDetailView, self).get(request, *args, **kwargs)
 
 
 class ReactionView(LoginRequiredMixin, View):
@@ -187,10 +196,22 @@ class CreatePostView(LoginRequiredMixin, CreateView):
             return self.form_invalid(form)
         else:
             valid = super(CreatePostView, self).form_valid(form)
-            post = self.object
+            post_obj = self.object
 
             if not images == []:
                 for image in images:
-                    PostImage.objects.create(post = post, image = image)
-            
+                    PostImage.objects.create(post = post_obj, image = image)
+
             return valid
+
+
+class NotificationView(LoginRequiredMixin, ListView):
+    template_name = 'post/notification.html'
+
+    def get_queryset(self):
+        return self.request.user.notifications.all_unread()
+    
+    def get_context_data(self, **kwargs):
+        context = super(NotificationView, self).get_context_data(**kwargs)
+        context['notif_no'] = self.request.user.notifications.all_unread().count()
+        return context

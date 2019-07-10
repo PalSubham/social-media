@@ -9,3 +9,5 @@ virtualenv
 *.sock
 media/user_**
 uwsgi.log
+websocket.log
+key

@@ -1,4 +1,3 @@
-
 #icon-navbar {
     position: sticky;
     position: -webkit-sticky;
@@ -73,6 +72,14 @@
     position: relative;
     overflow: hidden;
     border-radius: 20px;
+}
+
+.all-image img {
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
 }
 
 .all-image:after {
@@ -416,4 +423,19 @@
     margin-top: 50%;
     margin-left: 50%;
     transform: translate(-50%, -50%);
+}
+
+.notif-block, .notif-block:link, .notif-block:visited, .notif-block:hover, .notif-block:active, .notif-block:focus{
+    text-decoration: none;
+    color: black;
+}
+
+#no-notif {
+    font-family: "Gloria Hallelujah";
+    font-size: 3vw;
+}
+
+.notif-description {
+    font-family: "Gloria Hallelujah";
+    font-size: 2vw;
 }

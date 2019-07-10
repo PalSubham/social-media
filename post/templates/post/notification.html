@@ -1,0 +1,42 @@
+{% extends "post/signed_in_base.html" %}
+
+{% block notif-icon-id %}
+id="icon-for-active-page"
+{% endblock %}
+
+{% block body-content %}
+{% ifequal notif_no 0 %}
+<p id="no-notif" class="mb-5 mx-auto mt-0 text-center non-selectable-text">No new notification</p>
+{% else %}
+{% for notif in object_list %}
+<div class="row mb-5 mx-auto">
+    <a class="d-block col-xs-10 col-sm-10 col-md-10 col-lg-10 offset-xs-1 offset-sm-1 offset-md-1 offset-lg-1 post-brief-col py-3 notif-block" href="{{ notif.url }}?notif={{ notif.id }}">
+        <div class="row mb-3">
+            <div class="col-md-12 col-lg-12 clearfix">
+                <div class="all-image feed-avatar rounded-circle float-sm-left float-md-lef float-lg-left float-xl-left mr-2">
+                    <img src="{{ notif.source.userprofile.avatar.url }}">
+                </div>
+                <div class="float-sm-left float-md-lef float-lg-left float-xl-left non-selectable-text">
+                    <h2>From {{ notif.source_display_name }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <p class="non-selectable-text notif-description ml-5">
+                    {% ifequal notif.category 'post' %}
+                    <b>{{ notif.source_display_name }}</b> {{ notif.action }} {{ notif.short_description }}
+                    {% endifequal %}
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <p class="non-selectable-text">{{ notif.create_date }}</p>
+            </div>
+        </div>
+    </a>
+</div>
+{% endfor %}
+{% endifequal %}
+{% endblock %}

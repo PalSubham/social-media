@@ -1,10 +1,12 @@
 from django.db import models
-from django.db.models.signals import post_delete
+from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
 from django.contrib.auth.models import User
 from django.utils.timezone import localtime
 from django.core.exceptions import ValidationError
+from django.urls import reverse
 from shareland.commons import get_path
+from .tasks import *
 
 # Create your models here.
 
@@ -83,11 +85,23 @@ class Comment(models.Model):
 
 
 @receiver(post_delete, sender = PostImage)
-def delete_image(sender, instance, **kwargs):
+def delete_post_image(sender, instance, **kwargs):
     instance.image.delete(False)
     return
 
 @receiver(post_delete, sender = Comment)
-def delete_image(sender, instance, **kwargs):
+def delete_comment_image(sender, instance, **kwargs):
     instance.comment_image.delete(False)
+    return
+
+@receiver(post_delete, sender = Post)
+def del_notif(sender, instance, **kwargs):
+    del_notif_task.delay(instance.id)
+    return
+
+@receiver(post_save, sender = Post)
+def send_notif(sender, instance, created, **kwargs):
+    if created:
+        notif.delay(instance.owner.id, instance.id, reverse('postdetails', args = (instance.id,)))
+        
     return

@@ -9,5 +9,6 @@ urlpatterns = [
     path('comment/', CommentView.as_view(), name = 'comment'),
     path('extra/', ExtraDataView.as_view(), name = 'extra'),
     path('createpost/', CreatePostView.as_view(), name = 'createpost'),
+    path('notifications/', NotificationView.as_view(), name = 'notifications'),
 ]
 
