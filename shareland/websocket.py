@@ -31,7 +31,7 @@ def application(env, start_response):
         except OSError as error:
             connection.close()
             print(error)
-            sys.exit(1) # The process is closed and uwsgi respwns it.
+            sys.exit(1) # The process is closed and uwsgi respawns it.
         
         return
     

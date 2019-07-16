@@ -188,5 +188,5 @@ REST_FRAMEWORK = {
 REST_KNOX = {
     'TOKEN_TTL': timedelta(weeks = 4),
     'MIN_REFRESH_INTERVAL': 30,
-    'USER_SERIALIZER': 'userprofile.serializers.OnlyUserSerializer',
+    'USER_SERIALIZER': 'userprofile.serializers.UserSignedInSerializer',
 }

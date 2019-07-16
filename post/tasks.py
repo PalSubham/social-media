@@ -1,6 +1,6 @@
 from celery.decorators import task
 from notifications.signals import notify
-from notifications.models import *
+from notifications.models import Notification
 from django.contrib.auth.models import User
 
 @task(name = 'notif')

@@ -10,6 +10,9 @@ class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
         fields = ('id', 'timezone', 'avatar', 'birthday',)
+        extra_kwargs = {
+            'birthday': {'allow_null': False, 'required': True,},
+        }
     
     def update(self, instance, validated_data):
         instance.timezone = validated_data.get('timezone', instance.timezone)
@@ -22,20 +25,36 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
 
-    userprofile = UserProfileSerializer()
+    userprofile = UserProfileSerializer(required = True)
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'first_name', 'last_name', 'email', 'userprofile',)
+        fields = ('id', 'username', 'password', 'first_name', 'last_name', 'email', 'userprofile',)
+        extra_kwargs = {
+            'password': {'write_only': True,},
+            'first_name': {'allow_null': False, 'required': True,},
+            'last_name': {'allow_null': False, 'required': True,},
+        }
 
-    '''def create(self, validated_data):
+
+    def create(self, validated_data):
         userprofile_data = validated_data.pop('userprofile')
-        user = User.objects.create_user(**validated_data)
+        username = validated_data.get('username', None)
+        password = validated_data.get('password', None)
 
-        userprofile = UserProfile(owner = user, **userprofile_data)
-        userprofile.save()
+        newuser = User.objects.create_user(**validated_data)
+        user = authenticate(self.context['request'], username = username, password = password)
 
-        return user
+        if not user == None:
+            userprofile = user.userprofile
+            userprofile.timezone = userprofile_data.get('timezone', None)
+            userprofile.birthday = userprofile_data.get('birthday', None)
+            userprofile.save()
+        else:
+            newuser.delete()
+            raise serializers.ValidationError("Cannot create account", code='authorization')
+
+        return newuser
 
     def update(self, instance, validated_data):
         instance.first_name = validated_data.get('first_name', instance.first_name)
@@ -43,10 +62,10 @@ class UserSerializer(serializers.ModelSerializer):
         instance.email = validated_data.get('email', instance.email)
         instance.save()
 
-        return instance'''
+        return instance
 
 
-class OnlyUserSerializer(serializers.ModelSerializer):
+class UserSignedInSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
@@ -65,8 +84,8 @@ class ProfileSerializer(serializers.Serializer):
 
 class SignInSerializer(serializers.Serializer):
 
-    username = serializers.CharField(label = 'Username')
-    password = serializers.CharField(label="Password", style={'input_type': 'password'}, trim_whitespace=False)
+    username = serializers.CharField()
+    password = serializers.CharField(trim_whitespace=False)
     email = serializers.EmailField()
 
     def validate(self, data):
