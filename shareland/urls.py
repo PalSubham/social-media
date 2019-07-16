@@ -18,10 +18,12 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 from django.views.generic.base import RedirectView
+import os
 
 urlpatterns = [
-    path('favicon.ico', RedirectView.as_view(url = settings.STATIC_URL + 'icon/favicon.ico')),
+    path(r'favicon.ico', RedirectView.as_view(url = '/static/favicon.ico')),
     path('admin/', admin.site.urls),
+    path('api/auth/', include('knox.urls')),
     path('', include('userprofile.urls')),
     path('', include('post.urls'))
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

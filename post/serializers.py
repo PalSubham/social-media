@@ -20,10 +20,30 @@ class PostImageSerializer(serializers.ModelSerializer):
 class PostSerializer(serializers.ModelSerializer):
 
     postimages = PostImageSerializer(many = True)
+    total_reactions = serializers.SerializerMethodField()
+    total_comments = serializers.SerializerMethodField()
+    owner_full_name = serializers.SerializerMethodField()
+    owner_avatar = serializers.SerializerMethodField()
+    owner_id = serializers.SerializerMethodField()
 
     class Meta:
         model = Post
-        fields = ('id', 'heading', 'post_text', 'creation_date', 'postimages',)
+        fields = ('id', 'heading', 'post_text', 'creation_date', 'postimages', 'total_reactions', 'total_comments', 'owner_full_name', 'owner_avatar','owner_id',)
+    
+    def get_total_reactions(self, obj):
+        return obj.postreactions.count()
+    
+    def get_total_comments(self, obj):
+        return obj.comments.count()
+    
+    def get_owner_full_name(self, obj):
+        return obj.owner.get_full_name()
+    
+    def get_owner_avatar(self, obj):
+        return self.context.get('request').build_absolute_uri(obj.owner.userprofile.avatar.url)
+    
+    def get_owner_id(self, obj):
+        return obj.owner.id
     
     def create(self, validated_data):
         postimage_data = validated_data.pop('postimages')
@@ -51,9 +71,14 @@ class ReactionSerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
 
+    total_replies = serializers.SerializerMethodField()
+
     class Meta:
         model = Comment
-        fields = ('id', 'comment_text', 'comment_image', 'comment_created', 'replies',)
+        fields = ('id', 'comment_text', 'comment_image', 'comment_created', 'replies', 'total_replies',)
+
+    def get_total_replies(self, obj):
+        return obj.replies.count()
     
     def update(self, instance, validated_data):
         instnace.comment_text = validated_data.get('comment_text', instance.comment_text)
@@ -70,3 +95,7 @@ class NotificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notification
         fields = ('id', 'source_display_name', 'action', 'category', 'obj', 'url', 'short_description', 'extra_data', 'update_date',)
+
+
+
+

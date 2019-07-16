@@ -1,21 +1,40 @@
 from django.utils.deprecation import MiddlewareMixin
 from django.utils import timezone
+from knox.auth import TokenAuthentication
+from rest_framework.exceptions import AuthenticationFailed
+from .models import UserProfile
 import pytz
-from .models import *
 
+# Middlewares
 
 # Activates timezone for a logged in user
 class ActivateTimezoneMiddleware(MiddlewareMixin):
 
     def process_request(self, request):
-        if request.user.is_authenticated:
-            tzname = UserProfile.objects.get(owner = request.user).timezone
+        uri = request.build_absolute_uri()
 
-            if tzname:
-                timezone.activate(pytz.timezone(tzname))
-            else:
+        if 'admin' in uri and request.user.is_authenticated:
+            user = request.user
+        else:
+            tokenauth = TokenAuthentication()
+
+            try:
+                user_token = tokenauth.authenticate(request)
+
+                if user_token:
+                    user = user_token[0]
+                else:
+                    timezone.deactivate()
+                    return
+            except AuthenticationFailed:
                 timezone.deactivate()
+                return
+        
+        tzname = UserProfile.objects.get(owner = user).timezone
+
+        if tzname:
+            timezone.activate(pytz.timezone(tzname))
         else:
             timezone.deactivate()
-        
+
         return

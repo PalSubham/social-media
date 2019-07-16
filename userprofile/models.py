@@ -24,17 +24,17 @@ class UserProfile(models.Model):
         return Relationship.object.get_or_create(from_person = self, to_person = person, status = 1)
     
     def remove_following(self, person):
-        Relationship.objects.filter(from_person = self, to_person = person).delete()
+        Relationship.objects.get(from_person = self, to_person = person).delete()
         return
     
-    def get_following(self):
-        return self.follows.filter(to_people__from_person = self, to_people__status = 1)
+    def get_followings(self):
+        return User.objects.filter(userprofile__to_people__from_person = self, userprofile__to_people__status = 1)
     
     def get_followers(self):
-        return self.followed_by.filter(from_people__to_person = self, from_people__status = 1)
+        return User.objects.filter(userprofile__from_people__to_person = self, userprofile__from_people__status = 1)
 
     def get_blocked_followers(self):
-        return self.followed_by.filter(from_people__to_person = self, from_people__status = 2)
+        return User.objects.filter(userprofile__from_people__to_person = self, userprofile__from_people__status = 2)
 
 
 class Relationship(models.Model):
