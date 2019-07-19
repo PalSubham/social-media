@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.contrib.auth.models import User
 from notifications.models import *
 from .models import *
 
@@ -9,12 +10,6 @@ class PostImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = PostImage
         fields = ('id', 'image',)
-    
-    def update(self, instance, validated_data):
-        instance.image = validated_data.get('image', instance.image)
-        instance.save()
-
-        return instance   
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -29,6 +24,9 @@ class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = ('id', 'heading', 'post_text', 'creation_date', 'postimages', 'total_reactions', 'total_comments', 'owner_full_name', 'owner_avatar','owner_id',)
+        extra_kwargs = {
+            'creation_date': {'read_only': True, 'required': False,},
+        }
     
     def get_total_reactions(self, obj):
         return obj.postreactions.count()
@@ -48,12 +46,45 @@ class PostSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         postimage_data = validated_data.pop('postimages')
 
-        post = super(PostImageSerializer, self).create(validated_data)
+        post = self.Meta.model.objects.create(owner = self.context['request'].user, **validated_data)
 
-        for postimage in postimages:
-            Postimage.object.create(post = post, **postimage)
+        for postimage in postimage_data:
+            PostImage.objects.create(post = post, **postimage)
 
         return post
+    
+    def update(self, instance, validated_data):
+        postimages = validated_data.pop('postimages')
+        postimages_count = len(postimages)
+
+        instance.heading = validated_data.get('heading', instance.heading)
+        instance.post_text = validated_data.get('post_text', instance.post_text)
+        instance.save()
+
+        post_images = instance.postimages
+        post_images_count = len(post_images)
+
+        # Equal no. of images come from update form, so update them all
+        if postimages_count == post_images_count:
+            for i in range(postimages_count):
+                post_images[i].image = postimages[i].get('image', post_images[i].image)
+                post_images[i].save()
+        # More no. of images come from update form, so update and create some images
+        elif postimages_count > post_images_count:
+            for i in range(post_images_count):
+                post_images[i].image = postimages[i].get('image', post_images[i].image)
+                post_images[i].save()
+            for image in postimages[post_images_count:]:
+                postimage = PostImage.objects.create(post = instance, **image)
+        # Less no. of images come from update form, so update and delete extra images
+        else:
+            for i in range(postimages_count):
+                post_images[i].image = postimages[i].get('image', post_images[i].image)
+                post_images[i].save()
+            for image in post_images[postimages_count:]:
+                image.delete()
+        
+        return instance
 
 
 class ReactionSerializer(serializers.ModelSerializer):

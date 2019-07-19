@@ -5,7 +5,8 @@ from .views import *
 
 urlpatterns = [
     path('api/feed/', FeedView.as_view(), name = 'feed'),
-    path('api/postdetails/<int:pk>/', PostDetailDeleteView.as_view(), name = 'postdetails'),
+    path('api/postdetails/<int:pk>/', PostRetrieveUpdateDestroyView.as_view(), name = 'postdetails'),
+    path('api/createpost/', PostCreateView.as_view(), name = 'createpost'),
 ]
 
 '''

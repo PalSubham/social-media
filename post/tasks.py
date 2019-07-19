@@ -11,7 +11,7 @@ def notif(poster_id, post_id, post_detail):
         notif_args = {
             'source': poster,
             'source_display_name': poster.get_full_name(),
-            'recipient': follower.owner,
+            'recipient': follower,
             'category': 'post',
             'action': 'shared',
             'obj': post_id,

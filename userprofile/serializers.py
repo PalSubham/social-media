@@ -42,7 +42,7 @@ class UserSerializer(serializers.ModelSerializer):
         username = validated_data.get('username', None)
         password = validated_data.get('password', None)
 
-        newuser = User.objects.create_user(**validated_data)
+        newuser = self.Meta.model.objects.create_user(**validated_data)
         user = authenticate(self.context['request'], username = username, password = password)
 
         if not user == None:

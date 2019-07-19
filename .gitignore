@@ -11,3 +11,4 @@ media/user_**
 uwsgi.log
 websocket.log
 key
+test.json

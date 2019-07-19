@@ -4,6 +4,7 @@ from knox.views import LoginView as KnoxLoginView
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
+from rest_framework.views import APIView
 from .serializers import *
 
 # Create your views here.
@@ -34,6 +35,13 @@ class SignUpView(KnoxLoginView):
         login(request, user)
 
         return super(SignUpView, self).post(request, format)
+
+
+class IsAuthenticatedView(APIView):
+
+    def get(self, request, *args, **kwargs):
+        serializer = UserSignedInSerializer(request.user)
+        return Response(serializer.data)
 
 
 class ProfileViewSet(GenericViewSet):

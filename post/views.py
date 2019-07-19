@@ -29,13 +29,17 @@ class FeedView(ListAPIView):
     def get_queryset(self):
         all_posts = []
         for following in self.request.user.userprofile.follows.all():
-            all_posts += following.owner.posts.all().order_by('-creation_date')
+            all_posts += following.owner.posts.all().order_by('-creation_date')[:10]
         
         return sorted(all_posts, key = lambda each_post: each_post.creation_date, reverse = True)
 
 
-class PostDetailDeleteView(RetrieveDestroyAPIView):
+class PostRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     queryset = Post.objects.all()
+    serializer_class = PostSerializer
+
+
+class PostCreateView(CreateAPIView):
     serializer_class = PostSerializer
 
 

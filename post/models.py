@@ -84,17 +84,9 @@ class Comment(models.Model):
 
 
 
-@receiver(post_delete, sender = PostImage)
-def delete_post_image(sender, instance, **kwargs):
-    instance.image.delete(False)
-    return
+# Tasks for signals from models
 
-@receiver(post_delete, sender = Comment)
-def delete_comment_image(sender, instance, **kwargs):
-    instance.comment_image.delete(False)
-    return
-
-@receiver(post_delete, sender = Post)
+'''@receiver(post_delete, sender = Post)
 def del_notif(sender, instance, **kwargs):
     del_notif_task.delay(instance.id)
     return
@@ -104,4 +96,4 @@ def send_notif(sender, instance, created, **kwargs):
     if created:
         notif.delay(instance.owner.id, instance.id, reverse('postdetails', args = (instance.id,)))
         
-    return
+    return'''
