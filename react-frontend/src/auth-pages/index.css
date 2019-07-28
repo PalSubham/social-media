@@ -1,0 +1,48 @@
+.signup-page-container, .signin-page-container, .new-post-container {
+    text-align: left;
+}
+
+.signup-header {
+    text-align: center;
+    margin-bottom: 0;
+}
+
+.helptext {
+    color: rgb(238, 187, 187);
+    font-family: "Lobster";
+    font-size: 1vw;
+    margin-bottom: 0;
+}
+
+.signup-page-container form{
+    margin-top:1vw;
+    width: 52%;
+    margin-left: 24%;
+}
+
+.error {
+    margin-top: 1vw;
+    font-family: "Lobster";
+    color: red;
+    font-size: 1vw;
+    word-wrap: break-word;
+}
+
+input[type=submit] {
+    font-family: "Gloria Hallelujah";
+}
+
+.signin-super {
+    width: 40vw;
+    margin-left: 30vw;
+}
+
+.signin-page-container form {
+    margin-top:2.5vw;
+    width: 80%;
+    margin-left: 10%;
+}
+
+.alert-warning {
+    margin-top: 2vw;
+}

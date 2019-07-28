@@ -1,6 +1,8 @@
 from django.contrib.auth import login
 from django.contrib.auth.models import User
+from knox.auth import TokenAuthentication
 from knox.views import LoginView as KnoxLoginView
+from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
@@ -39,9 +41,23 @@ class SignUpView(KnoxLoginView):
 
 class IsAuthenticatedView(APIView):
 
+    permission_classes = (AllowAny,)
+    authentication_classes = tuple()
+
     def get(self, request, *args, **kwargs):
-        serializer = UserSignedInSerializer(request.user)
-        return Response(serializer.data)
+        tokenauth = TokenAuthentication()
+        
+        try:
+            user_token = tokenauth.authenticate(request)
+
+            if user_token:
+                user = user_token[0]
+                serializer = UserSignedInSerializer(user)
+                return Response(serializer.data)
+            else:
+                return Response({'signed_in': False})
+        except AuthenticationFailed:
+            return Response({'signed_in': False})
 
 
 class ProfileViewSet(GenericViewSet):

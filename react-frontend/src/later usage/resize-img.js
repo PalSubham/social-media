@@ -1,8 +1,7 @@
-function resize_image_brief()
-{
-    $('.all-image').each(function (index, object) {
-        let images = $(this).children('img');
-        let size = images.length;
+const resizeBriefImage = () => {
+    window.$('.all-image').each(function (index, object) {
+        const images = $(this).children('img');
+        const size = images.length;
 
         for(let i = 0; i < size; i++)
         {
@@ -15,17 +14,7 @@ function resize_image_brief()
                 $(images[i]).width('auto').height('100%');
             }
         }
-        
-        return;
     });
-    console.log('hello');
-    return;
-}
+};
 
-$(window).ready(function () {
-    
-    resize_image_brief();
-    
-    return;
-});
-
+export default resizeBriefImage;

@@ -67,9 +67,14 @@ class UserSerializer(serializers.ModelSerializer):
 
 class UserSignedInSerializer(serializers.ModelSerializer):
 
+    signed_in = serializers.SerializerMethodField()
+
     class Meta:
         model = User
-        fields = ('id', 'first_name',)
+        fields = ('id', 'first_name', 'signed_in',)
+    
+    def get_signed_in(self, obj):
+        return True
 
 
 class ProfileSerializer(serializers.Serializer):
@@ -97,13 +102,13 @@ class SignInSerializer(serializers.Serializer):
             user = authenticate(self.context['request'], username = username, password = password)
 
             if not user:
-                raise serializers.ValidationError("Username or Password is incorrect", code='authorization')
+                raise serializers.ValidationError('Incorrect username or password.', code='authorization')
             if not user.is_active:
-                raise serializers.ValidationError('This user is not active', code='authorization')
+                raise serializers.ValidationError('This user is not active.', code='authorization')
             if not user.email == email:
-                raise serializers.ValidationError('Incorrect Email ID', code='authorization')
+                raise serializers.ValidationError('Incorrect Email ID.', code='authorization')
         else:
-            raise serializers.ValidationError('Missing credential(s)', code='authorization')
+            raise serializers.ValidationError('Missing credential(s).', code='authorization')
         
         data['user'] = user
 

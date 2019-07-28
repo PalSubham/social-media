@@ -8,7 +8,7 @@ body {
     sans-serif, "Lobster", "Gloria Hallelujah", cursive;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-image: url('./image/background.jpg');
+    background-image: url('./media/background.jpg');
     height: 100%;
     background-repeat: no-repeat;
     background-size: cover;

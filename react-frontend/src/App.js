@@ -48,6 +48,15 @@ class App extends React.Component {
         this.tryAgain = this.tryAgain.bind(this);
     }
 
+    handleRedirectionOnLogin(id, name) {
+        this.setState({
+            isAuth: true,
+            user_id: id,
+            first_name: name,
+            error: ''
+        });
+    }
+
     onClickSignOut() {
         const token = localStorage.getItem('authToken');
 
@@ -61,6 +70,7 @@ class App extends React.Component {
         }).then((response) => {
             if(response.ok)
             {
+                localStorage.removeItem('authToken');
                 this.setState({
                     isAuth: false,
                     user_id: null,
@@ -111,21 +121,25 @@ class App extends React.Component {
             }).then((response) => {
                 if(response.ok)
                 {
-                    const data = response.json();
-                    this.setState({
-                        isAuth: true,
-                        user_id: data.id,
-                        first_name: data.first_name,
-                        error: '',
-                    });
-                }
-                else if(response.status === 401)
-                {
-                    this.setState({
-                        isAuth: false,
-                        user_id: null,
-                        first_name: null,
-                        error: '',
+                    response.json().then((data) => {
+                        if(data.signed_in === true)
+                        {
+                            this.setState({
+                                isAuth: true,
+                                user_id: data.id,
+                                first_name: data.first_name,
+                                error: '',
+                            });
+                        }
+                        else
+                        {
+                            this.setState({
+                                isAuth: false,
+                                user_id: null,
+                                first_name: null,
+                                error: '',
+                            });
+                        }
                     });
                 }
                 else
@@ -194,8 +208,8 @@ class App extends React.Component {
                 {header}
                 <Switch>
                     <Route exact path="/" render={() => whichHome} />
-                    <Route path="/signin/" component={SignInPage} />
-                    <Route path="/signup/" component={SignUpPage} />
+                    <Route path="/signin/" render={() => <SignInPage onLogin={(id, name) => this.handleRedirectionOnLogin(id, name)} />} />
+                    <Route path="/signup/" render={() => <SignUpPage onLogin={(id, name) => this.handleRedirectionOnLogin(id, name)} />} />
                 </Switch>
             </BrowserRouter>
         );

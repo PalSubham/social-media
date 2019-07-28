@@ -2,7 +2,6 @@ from django.utils.deprecation import MiddlewareMixin
 from django.utils import timezone
 from knox.auth import TokenAuthentication
 from rest_framework.exceptions import AuthenticationFailed
-from .models import UserProfile
 import pytz
 
 # Middlewares
@@ -30,7 +29,7 @@ class ActivateTimezoneMiddleware(MiddlewareMixin):
                 timezone.deactivate()
                 return
         
-        tzname = UserProfile.objects.get(owner = user).timezone
+        tzname = user.userprofile.timezone
 
         if tzname:
             timezone.activate(pytz.timezone(tzname))

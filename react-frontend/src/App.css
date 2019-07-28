@@ -1,32 +1,51 @@
 header {
-  font-family: 'Gloria Hallelujah';
-  background-color: rgba(0, 0, 0, 0.5);
+    font-family: 'Gloria Hallelujah';
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 .fa-sign-in, .fa-sign-out {
-  color: wheat;
-  font-size: 4vw;
+    color: wheat;
+    font-size: 4vw;
 }
 
 #welcome {
-  color: whitesmoke;
+    color: whitesmoke;
 }
 
 .header {
-  padding: 0.5vw;
-  margin: 0;
-  font-size: 4vw;
-  color: wheat;
+    padding: 0.5vw;
+    margin: 0;
+    font-size: 4vw;
+    color: wheat;
 }
 
 .non-selectable-text {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .header a, .header a:active, .header a:hover, .header a:visited, .header a:focus, .header a:link  {
-  text-decoration: none;
-  color: wheat;
+    text-decoration: none;
+    color: wheat;
+}
+
+.great-header {
+    font-family: 'Gloria Hallelujah';
+    font-size: 5vw;
+
+}
+
+.for-background {
+    background-image: url('./media/leaf.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    opacity: 0.8;
+    position: absolute;
+    z-index: 1;
+    height: 100%;
+    width: 100%;
+    border-radius: 50px;
 }

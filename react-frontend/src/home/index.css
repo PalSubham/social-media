@@ -1,0 +1,120 @@
+.greet-div {
+    z-index: 2;
+    padding-top: 1vw; 
+}
+
+.root-container {
+    text-align: center;
+    margin-top: 2vw;
+    color: rgb(13, 253, 213);
+    position: relative;
+    padding-bottom: 2vw;
+}
+
+#talk {
+    font-family: Lobster;
+    text-align: left;
+    font-size: 2vw;
+}
+
+.signup-container {
+    margin-top: 2vw;
+    font-size: 3vw;
+    font-family: 'Gloria Hallelujah';
+    background: rgba(255, 255, 255, 0.8);
+    padding-top: 3vw;
+    padding-bottom: 3vw;
+}
+
+.btn-outline-dark {
+    font-size: 2vw;
+    border: 2px solid black;
+}
+
+#feature-talks {
+    margin-top: 2vw;
+}
+
+.feature-talk {
+    font-family: 'Gloria Hallelujah';
+    font-size: 3vw;
+}
+
+.feature-talk1 {
+    color: #4b00cb;
+}
+
+#feature-image1 {
+    margin: 2vw;
+    width: 10vw;
+    height: 7vw;
+}
+
+.feature-row1 {
+    background: rgba(194, 228, 191, 0.8);
+    margin-right: 10%;
+    border-radius: 0px 50px 50px 0px;
+}
+
+.feature-talk2 {
+    color: #804c05;
+    background: -webkit-linear-gradient(left, orange, yellow, green, cyan, blue, violet);
+    background: -o-linear-gradient(right, orange, yellow, green, cyan, blue, violet);
+    background: -o-linear-gradient(right, orange, yellow, green, cyan, blue, violet);
+    background: -moz-linear-gradient(right, orange, yellow, green, cyan, blue, violet);
+    background: linear-gradient(to right, orange, yellow, green, cyan, blue, violet);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+#feature-image2 {
+    margin: 2vw;
+    width: 10vw;
+    height: 7vw;
+}
+
+.feature-row2 {
+    background: rgb(160, 160, 168);
+    margin-left: 10%;
+    border-radius: 50px 0px 0px 50px;
+}
+
+.feature-talk3 {
+    color: blue;
+}
+
+.emoji-ex {
+    width: 7vw;
+    height: auto;
+}
+
+.feature-row3 {
+    background: rgba(229, 245, 184, 0.801);
+    margin-right: 10%;
+    border-radius: 0px 50px 50px 0px;
+}
+
+footer {
+    background: rgb(48, 48, 54);
+    margin-top: 200px;
+    margin-bottom: 0;
+    padding-bottom: 10px;
+}
+
+footer h1 {
+    font-family: 'Gloria Hallelujah';
+    font-size: 6vw;
+    color: white;
+    margin-bottom: 30px;
+}
+
+footer button {
+    font-family: 'Gloria Hallelujah';
+}
+
+footer h3 {
+    font-family: 'Gloria Hallelujah';
+    font-size: 3vw;
+    color: white;
+}

@@ -1,17 +1,4 @@
-from django.views.generic.list import ListView
-from django.views.generic.base import TemplateView
-from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView
-from django.views import View
-from django.contrib.auth.models import User
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import JsonResponse, HttpResponseForbidden
-from django.template.loader import render_to_string
-from django.urls import reverse
-from django.contrib.auth.models import User
-from django.shortcuts import get_object_or_404
 from rest_framework.generics import *
-from rest_framework.viewsets import *
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from rest_framework.pagination import PageNumberPagination
