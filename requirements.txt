@@ -3,7 +3,7 @@ billiard==3.6.0.0
 celery==4.3.0
 cffi==1.13.1
 cryptography==2.8
-Django==2.2.1
+Django==2.2.8
 django-cors-headers==3.0.2
 django-notifs==2.6.2
 django-rest-knox==4.1.0
