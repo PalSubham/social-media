@@ -6,9 +6,6 @@ virtualenv
 .DS_Store
 *.ini
 /static/
-*.sock
 media/user_**
-uwsgi.log
-websocket.log
 key
 test.json
